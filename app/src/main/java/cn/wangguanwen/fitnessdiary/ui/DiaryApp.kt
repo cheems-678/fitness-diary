@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -61,8 +62,9 @@ private val PagePadding = 20.dp
 private data class ScreenRoute(val page: Int, val draft: EditorDraft? = null)
 
 @Composable
-fun DiaryApp(model: DiaryViewModel) {
+fun DiaryApp(model: DiaryViewModel, playIntro: Boolean = false) {
     SketchTheme {
+        var introVisible by remember { mutableStateOf(playIntro) }
         var tab by rememberSaveable { mutableIntStateOf(0) }
         var deleting by remember { mutableStateOf<String?>(null) }
         var viewer by remember { mutableStateOf<ViewerRequest?>(null) }
@@ -83,6 +85,7 @@ fun DiaryApp(model: DiaryViewModel) {
         Box(Modifier.fillMaxSize().background(Paper)) {
             SketchBackground(if (editor != null) 1 else tab)
             Scaffold(
+                modifier = if (introVisible) Modifier.clearAndSetSemantics {} else Modifier,
                 containerColor = Color.Transparent,
                 snackbarHost = { SnackbarHost(snackbar) },
                 topBar = {
@@ -145,6 +148,7 @@ fun DiaryApp(model: DiaryViewModel) {
                     }
                 }
             }
+            if (introVisible) LaunchIntro { introVisible = false }
         }
 
         if (model.confirmClose) AlertDialog(onDismissRequest = model::keepEditing, shape = SketchShape, containerColor = Paper.copy(alpha = .96f),

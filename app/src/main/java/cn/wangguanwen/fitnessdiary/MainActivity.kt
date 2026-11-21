@@ -1,5 +1,6 @@
 package cn.wangguanwen.fitnessdiary
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,10 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.rgb(40, 37, 32)),
             navigationBarStyle = SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.rgb(40, 37, 32)),
         )
-        setContent { DiaryApp(model) }
+        val playIntro = (application as FitnessDiaryApplication).shouldPlayIntro(
+            restoringScreen = savedInstanceState != null,
+            animationsEnabled = ValueAnimator.areAnimatorsEnabled(),
+        )
+        setContent { DiaryApp(model, playIntro = playIntro) }
     }
 }

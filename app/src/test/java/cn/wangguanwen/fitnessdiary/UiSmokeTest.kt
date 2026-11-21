@@ -3,6 +3,7 @@ package cn.wangguanwen.fitnessdiary
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.ViewModelProvider
+import androidx.test.core.app.ActivityScenario
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,6 +22,13 @@ class UiSmokeTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
 
     @Test fun appOpensAndDailyRecordFlowsAcrossThreeScreens() {
+        compose.mainClock.autoAdvance = false
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("launch-intro").assertIsDisplayed().performTouchInput { click() }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("launch-intro").assertDoesNotExist()
+        compose.mainClock.autoAdvance = true
+
         try {
             compose.waitUntil(15_000) {
                 shadowOf(Looper.getMainLooper()).idle()
@@ -45,5 +53,14 @@ class UiSmokeTest {
         compose.onNodeWithText("设置").performClick()
         compose.onNodeWithText("导出完整备份").assertIsDisplayed()
         compose.onNodeWithText("从备份恢复").assertIsDisplayed()
+
+        compose.activityRule.scenario.recreate()
+        compose.onNodeWithText("导出完整备份").assertIsDisplayed()
+        compose.onNodeWithTag("launch-intro").assertDoesNotExist()
+        compose.mainClock.autoAdvance = false
+        ActivityScenario.launch(MainActivity::class.java).use {
+            compose.mainClock.advanceTimeByFrame()
+            compose.onNodeWithTag("launch-intro").assertDoesNotExist()
+        }
     }
 }

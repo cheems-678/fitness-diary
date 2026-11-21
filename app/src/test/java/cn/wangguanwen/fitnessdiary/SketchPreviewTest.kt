@@ -27,6 +27,16 @@ class SketchPreviewTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
 
     @Test fun renderFourScreensAndVerifyDraftAndDatePicker() {
+        compose.mainClock.autoAdvance = false
+        compose.mainClock.advanceTimeBy(1_700)
+        compose.onNodeWithTag("launch-intro").assertIsDisplayed()
+        capture("启动画面")
+        compose.mainClock.advanceTimeBy(1_150)
+        compose.onNodeWithTag("launch-intro").assertExists()
+        compose.mainClock.advanceTimeBy(250)
+        compose.onNodeWithTag("launch-intro").assertDoesNotExist()
+        compose.mainClock.autoAdvance = true
+
         val model = ViewModelProvider(compose.activity)[DiaryViewModel::class.java]
         runBlocking(Dispatchers.IO) {
             val weights = listOf(6640, 6605, 6612, 6585, 6562, 6570, 6545, 6530, 6538, 6514, 6525)
