@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.FitnessDiary.Base" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#282520</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#F5F0E6</item>
+        <item name="android:navigationBarColor">#282520</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+    <style name="Theme.FitnessDiary" parent="Theme.FitnessDiary.Base" />
+</resources>

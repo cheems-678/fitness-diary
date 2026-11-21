@@ -1,0 +1,36 @@
+# Local Android and Gradle configuration
+.gradle/
+.kotlin/
+**/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Signing and credentials
+.private/
+.env
+.env.*
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+signing.properties
+
+# Local tools, user data and generated deliveries
+.tools/
+tmp/
+*.apk
+*.aab
+*.zip
+*.db
+*.db-shm
+*.db-wal
+*.sqlite*
+captures/
+交付/
+
+# Gradle Wrapper jar is deliberately tracked.
